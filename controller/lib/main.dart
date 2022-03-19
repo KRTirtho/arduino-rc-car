@@ -1,30 +1,67 @@
-import 'package:controller/screens/BluetoothOff.dart';
-import 'package:controller/screens/FindDevice.dart';
+import 'package:controller/screens/BondedDevice.dart';
+import 'package:controller/screens/Controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_blue/flutter_blue.dart';
+import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
 void main() {
-  runApp(const FlutterBlueApp());
+  runApp(MyApp());
 }
 
-class FlutterBlueApp extends StatelessWidget {
-  const FlutterBlueApp({Key? key}) : super(key: key);
-
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      color: Colors.lightBlue,
-      home: StreamBuilder<BluetoothState>(
-          stream: FlutterBlue.instance.state,
-          initialData: BluetoothState.unknown,
-          builder: (c, snapshot) {
-            final state = snapshot.data;
-            if (state != BluetoothState.on) {
-              return const FindDevicesScreen();
-            }
-            return BluetoothOffScreen(state: state);
-          }),
+      title: 'Flutter Car Controller',
+      theme: ThemeData.dark(),
+      home: FutureBuilder(
+        future: FlutterBluetoothSerial.instance.requestEnable(),
+        builder: (context, future) {
+          if (future.connectionState == ConnectionState.waiting) {
+            return Scaffold(
+              body: Container(
+                height: double.infinity,
+                child: Center(
+                  child: Icon(
+                    Icons.bluetooth_disabled,
+                    size: 200.0,
+                    color: Colors.black12,
+                  ),
+                ),
+              ),
+            );
+          } else {
+            return Home();
+          }
+        },
+        // child: MyHomePage(title: 'Flutter Demo Home Page'),
+      ),
     );
+  }
+}
+
+class Home extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+        child: Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text('Connection'),
+      ),
+      body: SelectBondedDevicePage(
+        onChatPage: (device1) {
+          BluetoothDevice device = device1;
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return ControllerScreen(server: device);
+              },
+            ),
+          );
+        },
+      ),
+    ));
   }
 }

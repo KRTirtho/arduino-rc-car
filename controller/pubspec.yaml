@@ -24,9 +24,9 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
-  flutter_blue: ^0.8.0
   speech_to_text: ^5.4.3
   avatar_glow: ^2.0.2
+  flutter_bluetooth_serial: ^0.4.0
 
 dev_dependencies:
   flutter_test:

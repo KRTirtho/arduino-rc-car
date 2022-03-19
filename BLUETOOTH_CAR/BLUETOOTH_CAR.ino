@@ -1,11 +1,4 @@
 #include <AFMotor.h>
-#include <NewPing.h>
-#include <Servo.h>
-
-#define TRIGGER_PIN A1
-#define ECHO_PIN A0
-#define MAX_DISTANCE 300
-#define IR A5
 
 // initial motors pin
 AF_DCMotor motor1(1, MOTOR12_1KHZ);
@@ -16,45 +9,45 @@ AF_DCMotor motor4(4, MOTOR34_1KHZ);
 int val;
 int Speeed = 255;
 
-NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
-Servo servo;
+// NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
+// Servo servo;
 
 void setup() {
   Serial.begin(9600);  // Set the baud rate to your Bluetooth module.
-  servo.attach(10);
-  servo.write(90);
-  pinMode(IR, INPUT);
+  // servo.attach(10);
+  // servo.write(90);
+  // pinMode(IR, INPUT);
 }
 void loop() {
   if (Serial.available() > 0) {
     val = Serial.read();
 
     Stop();  // initialize with motors stoped
-
     switch (val) {
-      case 'F':
+
+      case 'R':
         forward();
         break;
-      case 'B':
+      case 'L':
         back();
         break;
-      case 'L':
+      case 'B':
         left();
         break;
-      case 'R':
+      case 'F':
         right();
         break;
       case 'G':
-        topleft();
-        break;
-      case 'I':
-        topright();
-        break;
-      case 'H':
         bottomright();
         break;
-      case 'J':
+      case 'I':
         bottomleft();
+        break;
+      case 'H':
+        topleft();
+        break;
+      case 'J':
+        topright();
         break;
       case 'T':
         Stop();
@@ -65,152 +58,156 @@ void loop() {
 
 void forward() {
   // checking obstacle ahead
-  int distance = sonar.ping_cm();
+  // int distance = sonar.ping_cm();
 
-  if (distance < 10) {
-    Stop();
-    val = 0;
-  } else {
+  // if (distance < 10) {
+  //   Stop();
+  //   val = 0;
+  // } else {
     motor1.setSpeed(Speeed);  // Define maximum velocity
-    motor1.run(FORWARD);      // rotate the motor clockwise
     motor2.setSpeed(Speeed);  // Define maximum velocity
-    motor2.run(FORWARD);      // rotate the motor clockwise
     motor3.setSpeed(Speeed);  // Define maximum velocity
-    motor3.run(FORWARD);      // rotate the motor clockwise
     motor4.setSpeed(Speeed);  // Define maximum velocity
+
+    motor1.run(FORWARD);      // rotate the motor clockwise
+    motor2.run(FORWARD);      // rotate the motor clockwise
+    motor3.run(FORWARD);      // rotate the motor clockwise
     motor4.run(FORWARD);      // rotate the motor clockwise
-  }
+  // }
 }
 
 void back() {
-  int IR_Sensor = digitalRead(IR);
-  if (IR_Sensor == 0) {
-    Stop();
-    val = 0;
-  } else {
+  // int IR_Sensor = digitalRead(IR);
+  // if (IR_Sensor == 0) {
+  //   Stop();
+  //   val = 0;
+  // } else {
     motor1.setSpeed(Speeed);  // Define maximum velocity
-    motor1.run(BACKWARD);     // rotate the motor anti-clockwise
     motor2.setSpeed(Speeed);  // Define maximum velocity
-    motor2.run(BACKWARD);     // rotate the motor anti-clockwise
     motor3.setSpeed(Speeed);  // Define maximum velocity
-    motor3.run(BACKWARD);     // rotate the motor anti-clockwise
     motor4.setSpeed(Speeed);  // Define maximum velocity
+
+    motor1.run(BACKWARD);     // rotate the motor anti-clockwise
+    motor2.run(BACKWARD);     // rotate the motor anti-clockwise
+    motor3.run(BACKWARD);     // rotate the motor anti-clockwise
     motor4.run(BACKWARD);     // rotate the motor anti-clockwise
-  }
+  // }
 }
 
 void left() {
-  servo.write(180);
-  delay(100);
-  int distance = sonar.ping_cm();
-  servo.write(90);
-  if (distance < 10) {
-    Stop();
-    val = 0;
-  } else {
+  // servo.write(180);
+  // delay(100);
+  // int distance = sonar.ping_cm();
+  // servo.write(90);
+  // if (distance < 10) {
+  //   Stop();
+  //   val = 0;
+  // } else {
     motor1.setSpeed(Speeed);  // Define maximum velocity
-    motor1.run(BACKWARD);     // rotate the motor anti-clockwise
     motor2.setSpeed(Speeed);  // Define maximum velocity
-    motor2.run(BACKWARD);     // rotate the motor anti-clockwise
     motor3.setSpeed(Speeed);  // Define maximum velocity
-    motor3.run(FORWARD);      // rotate the motor clockwise
     motor4.setSpeed(Speeed);  // Define maximum velocity
+
+    motor1.run(BACKWARD);     // rotate the motor anti-clockwise
+    motor2.run(BACKWARD);     // rotate the motor anti-clockwise
+    motor3.run(FORWARD);      // rotate the motor clockwise
     motor4.run(FORWARD);      // rotate the motor clockwise
-  }
+  // }
 }
 
 void right() {
-  servo.write(0);
-  delay(100);
-  int distance = sonar.ping_cm();
-  servo.write(90);
-  if (distance < 10) {
-    Stop();
-    val = 0;
-  } else {
+  // servo.write(0);
+  // delay(100);
+  // int distance = sonar.ping_cm();
+  // servo.write(90);
+  // if (distance < 10) {
+  //   Stop();
+  //   val = 0;
+  // } else {
     motor1.setSpeed(Speeed);  // Define maximum velocity
-    motor1.run(FORWARD);      // rotate the motor clockwise
     motor2.setSpeed(Speeed);  // Define maximum velocity
-    motor2.run(FORWARD);      // rotate the motor clockwise
     motor3.setSpeed(Speeed);  // Define maximum velocity
-    motor3.run(BACKWARD);     // rotate the motor anti-clockwise
     motor4.setSpeed(Speeed);  // Define maximum velocity
+
+    motor1.run(FORWARD);      // rotate the motor clockwise
+    motor2.run(FORWARD);      // rotate the motor clockwise
+    motor3.run(BACKWARD);     // rotate the motor anti-clockwise
     motor4.run(BACKWARD);     // rotate the motor anti-clockwise
-  }
+  // }
 }
 
 void topleft() {
-  servo.write(135);
-  delay(100);
-  int distance = sonar.ping_cm();
-  servo.write(90);
-  if (distance < 10) {
-    Stop();
-    val = 0;
-  } else {
+  // servo.write(135);
+  // delay(100);
+  // int distance = sonar.ping_cm();
+  // servo.write(90);
+  // if (distance < 10) {
+  //   Stop();
+  //   val = 0;
+  // } else {
     motor1.setSpeed(Speeed);        // Define maximum velocity
     motor1.run(FORWARD);            // rotate the motor clockwise
-    motor2.setSpeed(Speeed);        // Define maximum velocity
+    motor2.setSpeed(Speeed/3.1);        // Define maximum velocity
     motor2.run(FORWARD);            // rotate the motor clockwise
-    motor3.setSpeed(Speeed / 3.1);  // Define maximum velocity
+    motor3.setSpeed(Speeed);  // Define maximum velocity
     motor3.run(FORWARD);            // rotate the motor clockwise
-    motor4.setSpeed(Speeed / 3.1);  // Define maximum velocity
+    motor4.setSpeed(Speeed);  // Define maximum velocity
     motor4.run(FORWARD);            // rotate the motor clockwise
-  }
+  // }
 }
 
 void topright() {
-  servo.write(45);
-  delay(100);
-  int distance = sonar.ping_cm();
-  servo.write(90);
-  if (distance < 10) {
-    Stop();
-    val = 0;
-  } else {
+  // servo.write(45);
+  // delay(100);
+  // int distance = sonar.ping_cm();
+  // servo.write(90);
+  // if (distance < 10) {
+  //   Stop();
+  //   val = 0;
+  // } else {
     motor1.setSpeed(Speeed / 3.1);  // Define maximum velocity
     motor1.run(FORWARD);            // rotate the motor clockwise
-    motor2.setSpeed(Speeed / 3.1);  // Define maximum velocity
+    motor2.setSpeed(Speeed);  // Define maximum velocity
     motor2.run(FORWARD);            // rotate the motor clockwise
     motor3.setSpeed(Speeed);        // Define maximum velocity
     motor3.run(FORWARD);            // rotate the motor clockwise
     motor4.setSpeed(Speeed);        // Define maximum velocity
     motor4.run(FORWARD);            // rotate the motor clockwise
-  }
+  // }
 }
 
 void bottomleft() {
-  int IR_Sensor = digitalRead(IR);
-  if (IR_Sensor == 0) {
-    Stop();
-    val = 0;
-  } else {
+  // int IR_Sensor = digitalRead(IR);
+  // if (IR_Sensor == 0) {
+  //   Stop();
+  //   val = 0;
+  // } else {
     motor1.setSpeed(Speeed);        // Define maximum velocity
     motor1.run(BACKWARD);           // rotate the motor anti-clockwise
     motor2.setSpeed(Speeed);        // Define maximum velocity
     motor2.run(BACKWARD);           // rotate the motor anti-clockwise
     motor3.setSpeed(Speeed / 3.1);  // Define maximum velocity
     motor3.run(BACKWARD);           // rotate the motor anti-clockwise
-    motor4.setSpeed(Speeed / 3.1);  // Define maximum velocity
+    motor4.setSpeed(Speeed);  // Define maximum velocity
     motor4.run(BACKWARD);           // rotate the motor anti-clockwise
-  }
+  // }
 }
 
 void bottomright() {
-  int IR_Sensor = digitalRead(IR);
-  if (IR_Sensor == 0) {
-    Stop();
-    val = 0;
-  } else {
-    motor1.setSpeed(Speeed / 3.1);  // Define maximum velocity
+  // int IR_Sensor = digitalRead(IR);
+  // if (IR_Sensor == 0) {
+  //   Stop();
+  //   val = 0;
+  // } else {
+    motor1.setSpeed(Speeed);  // Define maximum velocity
     motor1.run(BACKWARD);           // rotate the motor anti-clockwise
-    motor2.setSpeed(Speeed / 3.1);  // Define maximum velocity
+    motor2.setSpeed(Speeed);  // Define maximum velocity
     motor2.run(BACKWARD);           // rotate the motor anti-clockwise
     motor3.setSpeed(Speeed);        // Define maximum velocity
     motor3.run(BACKWARD);           // rotate the motor anti-clockwise
-    motor4.setSpeed(Speeed);        // Define maximum velocity
+    motor4.setSpeed(Speeed/3.1);        // Define maximum velocity
     motor4.run(BACKWARD);           // rotate the motor anti-clockwise
-  }
+  // }
 }
 
 void Stop() {

@@ -1,4 +1,4 @@
-import 'package:controller/screens/Device.dart';
+import 'package:controller/screens/Device.darts';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 
@@ -52,7 +52,7 @@ class FindDevicesScreen extends StatelessWidget {
             return FloatingActionButton(
                 child: const Icon(Icons.search),
                 onPressed: () => FlutterBlue.instance
-                    .startScan(timeout: const Duration(seconds: 4)));
+                    .startScan(timeout: const Duration(seconds: 10)));
           }
         },
       ),
