@@ -1,0 +1,28 @@
+{
+  "configurations": [
+    {
+      "name": "Linux",
+      "includePath": [
+        "${workspaceFolder}/**",
+        "~/.local/share/arduino/tools/**",
+        "~/.local/share/arduino/hardware/arduino/avr/**",
+        "~/.local/share/arduino/hardware/tools/**",
+        "~/.local/share/arduino/hardware/arduino/avr/cores/arduino",
+        "~/.local/share/arduino/libraries/**",
+        "~/Arduino/libraries/**"
+      ],
+      "forcedInclude": [
+        "~/.local/share/arduino/hardware/arduino/avr/cores/arduino/Arduino.h"
+      ],
+      "defines": [
+        "USBCON",
+        "ARDUINO=10813"
+      ],
+      "compilerPath": "~/.local/share/arduino/hardware/tools/avr/bin/avr-gcc",
+      "cStandard": "c11",
+      "cppStandard": "c++17",
+      "intelliSenseMode": "linux-clang-x64"
+    }
+  ],
+  "version": 4
+}

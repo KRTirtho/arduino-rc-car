@@ -1,0 +1,61 @@
+import 'package:controller/screens/Device.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_blue/flutter_blue.dart';
+
+class FindDevicesScreen extends StatelessWidget {
+  const FindDevicesScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Find Devices'),
+      ),
+      body: StreamBuilder<List<ScanResult>>(
+          stream: FlutterBlue.instance.scanResults,
+          initialData: const <ScanResult>[],
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) return CircularProgressIndicator.adaptive();
+            return ListView.builder(
+              itemCount: snapshot.data?.length,
+              itemBuilder: (context, index) {
+                final result = snapshot.data![index];
+                return ListTile(
+                  title: Text(result.device.name == ""
+                      ? "No Name "
+                      : result.device.name),
+                  subtitle: Text(result.device.id.toString()),
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) {
+                        // connecting device sending to device page
+                        result.device.connect();
+                        return DeviceScreen(device: result.device);
+                      },
+                    ),
+                  ),
+                );
+              },
+            );
+          }),
+      floatingActionButton: StreamBuilder<bool>(
+        stream: FlutterBlue.instance.isScanning,
+        initialData: false,
+        builder: (c, snapshot) {
+          if (snapshot.data!) {
+            return FloatingActionButton(
+              child: const Icon(Icons.stop),
+              onPressed: () => FlutterBlue.instance.stopScan(),
+              backgroundColor: Colors.red,
+            );
+          } else {
+            return FloatingActionButton(
+                child: const Icon(Icons.search),
+                onPressed: () => FlutterBlue.instance
+                    .startScan(timeout: const Duration(seconds: 4)));
+          }
+        },
+      ),
+    );
+  }
+}

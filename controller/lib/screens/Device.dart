@@ -1,0 +1,146 @@
+import 'package:avatar_glow/avatar_glow.dart';
+import 'package:controller/components/ControllerServiceTiles.dart';
+import 'package:controller/services/speech_api.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_blue/flutter_blue.dart';
+import 'package:speech_to_text/speech_to_text.dart';
+
+class DeviceScreen extends StatefulWidget {
+  const DeviceScreen({Key? key, required this.device}) : super(key: key);
+
+  final BluetoothDevice device;
+
+  @override
+  State<DeviceScreen> createState() => _DeviceScreenState();
+}
+
+class _DeviceScreenState extends State<DeviceScreen> {
+  bool _isListening = false;
+  String _text = "";
+
+  List<Widget> _buildServiceTiles(List<BluetoothService> services) {
+    return services
+        .map(
+          (service) => ControllerServiceTiles(service: service),
+        )
+        .toList();
+  }
+
+  Future toggleRecording() => SpeechApi.toggleRecording(
+        onResult: (text) => setState(() => _text = text),
+        onListening: (isListening) {
+          setState(() => _isListening = isListening);
+
+          if (!isListening) {
+            Future.delayed(Duration(seconds: 1), () {
+              // Utils.scanText(text);
+            });
+          }
+        },
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.device.name),
+        actions: <Widget>[
+          StreamBuilder<BluetoothDeviceState>(
+            stream: widget.device.state,
+            initialData: BluetoothDeviceState.connecting,
+            builder: (c, snapshot) {
+              VoidCallback? onPressed;
+              String text;
+              switch (snapshot.data) {
+                case BluetoothDeviceState.connected:
+                  onPressed = () => widget.device.disconnect();
+                  text = 'DISCONNECTED';
+                  break;
+                case BluetoothDeviceState.disconnected:
+                  onPressed = () => widget.device.connect();
+                  text = 'CONNECTED';
+                  break;
+                default:
+                  onPressed = null;
+                  text = snapshot.data.toString().substring(21).toUpperCase();
+                  break;
+              }
+              return TextButton(
+                  onPressed: onPressed,
+                  child: Text(
+                    text,
+                    style: Theme.of(context)
+                        .primaryTextTheme
+                        .button
+                        ?.copyWith(color: Colors.white),
+                  ));
+            },
+          )
+        ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: AvatarGlow(
+        animate: _isListening,
+        glowColor: Theme.of(context).primaryColor,
+        endRadius: 75.0,
+        duration: const Duration(seconds: 2),
+        repeatPauseDuration: const Duration(milliseconds: 100),
+        repeat: true,
+        child: FloatingActionButton(
+          child: Icon(
+            _isListening ? Icons.mic_rounded : Icons.mic_none_rounded,
+          ),
+          onPressed: toggleRecording,
+        ),
+      ),
+      body: ListView(
+        children: <Widget>[
+          StreamBuilder<BluetoothDeviceState>(
+            stream: widget.device.state,
+            initialData: BluetoothDeviceState.connecting,
+            builder: (c, snapshot) => ListTile(
+              leading: (snapshot.data == BluetoothDeviceState.connected)
+                  ? Icon(Icons.bluetooth_connected)
+                  : Icon(Icons.bluetooth_disabled),
+              title:
+                  Text('Device is ${snapshot.data.toString().split('.')[1]}.'),
+              subtitle: Text('${widget.device.id}'),
+              trailing: StreamBuilder<bool>(
+                stream: widget.device.isDiscoveringServices,
+                initialData: false,
+                builder: (c, snapshot) => IndexedStack(
+                  index: snapshot.data! ? 1 : 0,
+                  children: <Widget>[
+                    TextButton(
+                      child: const Text("Show Services"),
+                      onPressed: () => widget.device.discoverServices(),
+                    ),
+                    const IconButton(
+                      icon: SizedBox(
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation(Colors.grey),
+                        ),
+                        width: 18.0,
+                        height: 18.0,
+                      ),
+                      onPressed: null,
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+          StreamBuilder<List<BluetoothService>>(
+            stream: widget.device.services,
+            initialData: const [],
+            builder: (c, snapshot) {
+              return Column(
+                children: _buildServiceTiles(snapshot.data!),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
