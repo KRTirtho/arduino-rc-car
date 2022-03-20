@@ -1,10 +1,10 @@
 #include <AFMotor.h>
-// #include <NewPing.h>
-// #include <Servo.h>
-// #define TRIGGER_PIN A1
-// #define ECHO_PIN A0
-// #define MAX_DISTANCE 300
-// #define IR A5
+#include <NewPing.h>
+#include <Servo.h>
+#define TRIGGER_PIN A1
+#define ECHO_PIN A0
+#define MAX_DISTANCE 300
+#define IR A5
 
 // initial motors pin
 AF_DCMotor frontRightMotor(1, MOTOR12_1KHZ);
@@ -12,11 +12,11 @@ AF_DCMotor frontLeftMotor(2, MOTOR12_1KHZ);
 AF_DCMotor backLeftMotor(3, MOTOR34_1KHZ);
 AF_DCMotor backRightMotor(4, MOTOR34_1KHZ);
 
-int val;
+char val;
 int Speeed = 255;
 
-// NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
-// Servo servo;
+NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
+Servo servo;
 
 void setup() {
   Serial.begin(9600);  // Set the baud rate to your Bluetooth module.
@@ -26,7 +26,7 @@ void setup() {
 }
 void loop() {
   if (Serial.available() > 0) {
-    val = Serial.read();
+    val = static_cast<char>(Serial.read());
 
     // R -> Forward  L -> back  F -> Right  B -> Left
 

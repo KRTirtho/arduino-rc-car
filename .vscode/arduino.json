@@ -1,6 +1,6 @@
 {
     "board": "arduino:avr:uno",
     "programmer": "arduino:avrispmkii",
-    "port": "COM5",
-    "sketch": "BLUETOOTH_CAR\\BLUETOOTH_CAR.ino"
+    "port": "/dev/ttyACM0",
+    "sketch": "BLUETOOTH_CAR/bluetooth_control_voice_obstacle.ino"
 }
