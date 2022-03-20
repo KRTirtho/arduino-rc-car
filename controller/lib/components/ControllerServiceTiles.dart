@@ -1,7 +1,5 @@
 import 'package:controller/models/command.dart';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_blue/flutter_blue.dart';
 
 final List<Command> group1Commands = [
   Command("Forward", "F"),
@@ -22,9 +20,9 @@ final List<Command> combinedCommands = [
 ];
 
 class ControllerServiceTiles extends StatefulWidget {
-  final BluetoothService service;
+  final Function(Command) onCommand;
   const ControllerServiceTiles({
-    required this.service,
+    required this.onCommand,
     Key? key,
   }) : super(key: key);
 
@@ -39,20 +37,17 @@ class _ControllerServiceTilesState extends State<ControllerServiceTiles> {
 
   @override
   Widget build(BuildContext context) {
-    final write = widget.service.characteristics.first.write;
     if (activeGroup1Command != null && activeGroup2Command == null) {
-      write(activeGroup1Command!.command);
+      widget.onCommand(activeGroup1Command!);
     } else if (activeGroup2Command != null && activeGroup1Command == null) {
-      write(activeGroup2Command!.command);
+      widget.onCommand(activeGroup2Command!);
     } else if (activeGroup1Command != null &&
         activeGroup1Command?.title != "Stop" &&
         activeGroup2Command != null) {
-      write(
-        combinedCommands
-            .firstWhere((command) =>
-                activeGroup1Command!.title + activeGroup2Command!.title ==
-                command.title)
-            .command,
+      widget.onCommand(
+        combinedCommands.firstWhere((command) =>
+            activeGroup1Command!.title + activeGroup2Command!.title ==
+            command.title),
       );
     }
     return Row(

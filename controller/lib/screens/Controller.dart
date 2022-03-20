@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:typed_data';
-import 'package:flutter/cupertino.dart';
+import 'package:avatar_glow/avatar_glow.dart';
+import 'package:controller/components/ControllerServiceTiles.dart';
+import 'package:controller/services/speech_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
-import 'package:control_button/control_button.dart';
 
 class ControllerScreen extends StatefulWidget {
   final BluetoothDevice server;
@@ -25,6 +25,8 @@ class _Message {
 class _ControllerScreen extends State<ControllerScreen> {
   static final clientID = 0;
   BluetoothConnection? connection;
+  bool _isListening = false;
+  String _text = "";
 
   List<_Message> messages = <_Message>[];
   String _messageBuffer = '';
@@ -84,6 +86,18 @@ class _ControllerScreen extends State<ControllerScreen> {
     super.dispose();
   }
 
+  Future toggleRecording() => SpeechApi.toggleRecording(
+        onResult: (text) => setState(() => _text = text),
+        onListening: (isListening) {
+          setState(() => _isListening = isListening);
+
+          if (!isListening) {
+            Future.delayed(Duration(seconds: 1), () {
+              // Utils.scanText(text);
+            });
+          }
+        },
+      );
   double _value = 90.0;
   @override
   Widget build(BuildContext context) {
@@ -119,12 +133,30 @@ class _ControllerScreen extends State<ControllerScreen> {
               : isConnected
                   ? Text('Live chat with ${widget.server.name}')
                   : Text('Chat log with ${widget.server.name}'))),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: AvatarGlow(
+        animate: _isListening,
+        glowColor: Theme.of(context).primaryColor,
+        endRadius: 75.0,
+        duration: const Duration(seconds: 2),
+        repeatPauseDuration: const Duration(milliseconds: 100),
+        repeat: true,
+        child: FloatingActionButton(
+          child: Icon(
+            _isListening ? Icons.mic_rounded : Icons.mic_none_rounded,
+          ),
+          onPressed: toggleRecording,
+        ),
+      ),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
               height: 100,
+            ),
+            ControllerServiceTiles(
+              onCommand: (command) => _sendMessage(command.command),
             ),
             Flexible(
               child: ListView(

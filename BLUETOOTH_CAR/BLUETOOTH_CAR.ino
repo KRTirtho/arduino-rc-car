@@ -1,10 +1,16 @@
 #include <AFMotor.h>
+// #include <NewPing.h>
+// #include <Servo.h>
+// #define TRIGGER_PIN A1
+// #define ECHO_PIN A0
+// #define MAX_DISTANCE 300
+// #define IR A5
 
 // initial motors pin
-AF_DCMotor motor1(1, MOTOR12_1KHZ);
-AF_DCMotor motor2(2, MOTOR12_1KHZ);
-AF_DCMotor motor3(3, MOTOR34_1KHZ);
-AF_DCMotor motor4(4, MOTOR34_1KHZ);
+AF_DCMotor frontRightMotor(1, MOTOR12_1KHZ);
+AF_DCMotor frontLeftMotor(2, MOTOR12_1KHZ);
+AF_DCMotor backLeftMotor(3, MOTOR34_1KHZ);
+AF_DCMotor backRightMotor(4, MOTOR34_1KHZ);
 
 int val;
 int Speeed = 255;
@@ -22,9 +28,13 @@ void loop() {
   if (Serial.available() > 0) {
     val = Serial.read();
 
+    // R -> Forward  L -> back  F -> Right  B -> Left
+
+    Serial.print("Received Data:");
+    Serial.println(val);
+
     Stop();  // initialize with motors stoped
     switch (val) {
-
       case 'R':
         forward();
         break;
@@ -64,15 +74,15 @@ void forward() {
   //   Stop();
   //   val = 0;
   // } else {
-    motor1.setSpeed(Speeed);  // Define maximum velocity
-    motor2.setSpeed(Speeed);  // Define maximum velocity
-    motor3.setSpeed(Speeed);  // Define maximum velocity
-    motor4.setSpeed(Speeed);  // Define maximum velocity
+  frontRightMotor.setSpeed(Speeed);  // Define maximum velocity
+  frontLeftMotor.setSpeed(Speeed);   // Define maximum velocity
+  backLeftMotor.setSpeed(Speeed);    // Define maximum velocity
+  backRightMotor.setSpeed(Speeed);   // Define maximum velocity
 
-    motor1.run(FORWARD);      // rotate the motor clockwise
-    motor2.run(FORWARD);      // rotate the motor clockwise
-    motor3.run(FORWARD);      // rotate the motor clockwise
-    motor4.run(FORWARD);      // rotate the motor clockwise
+  frontRightMotor.run(FORWARD);  // rotate the motor clockwise
+  frontLeftMotor.run(FORWARD);   // rotate the motor clockwise
+  backLeftMotor.run(FORWARD);    // rotate the motor clockwise
+  backRightMotor.run(FORWARD);   // rotate the motor clockwise
   // }
 }
 
@@ -82,15 +92,15 @@ void back() {
   //   Stop();
   //   val = 0;
   // } else {
-    motor1.setSpeed(Speeed);  // Define maximum velocity
-    motor2.setSpeed(Speeed);  // Define maximum velocity
-    motor3.setSpeed(Speeed);  // Define maximum velocity
-    motor4.setSpeed(Speeed);  // Define maximum velocity
+  frontRightMotor.setSpeed(Speeed);  // Define maximum velocity
+  frontLeftMotor.setSpeed(Speeed);   // Define maximum velocity
+  backLeftMotor.setSpeed(Speeed);    // Define maximum velocity
+  backRightMotor.setSpeed(Speeed);   // Define maximum velocity
 
-    motor1.run(BACKWARD);     // rotate the motor anti-clockwise
-    motor2.run(BACKWARD);     // rotate the motor anti-clockwise
-    motor3.run(BACKWARD);     // rotate the motor anti-clockwise
-    motor4.run(BACKWARD);     // rotate the motor anti-clockwise
+  frontRightMotor.run(BACKWARD);  // rotate the motor anti-clockwise
+  frontLeftMotor.run(BACKWARD);   // rotate the motor anti-clockwise
+  backLeftMotor.run(BACKWARD);    // rotate the motor anti-clockwise
+  backRightMotor.run(BACKWARD);   // rotate the motor anti-clockwise
   // }
 }
 
@@ -103,15 +113,15 @@ void left() {
   //   Stop();
   //   val = 0;
   // } else {
-    motor1.setSpeed(Speeed);  // Define maximum velocity
-    motor2.setSpeed(Speeed);  // Define maximum velocity
-    motor3.setSpeed(Speeed);  // Define maximum velocity
-    motor4.setSpeed(Speeed);  // Define maximum velocity
+  frontRightMotor.setSpeed(Speeed);  // Define maximum velocity
+  frontLeftMotor.setSpeed(Speeed);   // Define maximum velocity
+  backLeftMotor.setSpeed(Speeed);    // Define maximum velocity
+  backRightMotor.setSpeed(Speeed);   // Define maximum velocity
 
-    motor1.run(BACKWARD);     // rotate the motor anti-clockwise
-    motor2.run(BACKWARD);     // rotate the motor anti-clockwise
-    motor3.run(FORWARD);      // rotate the motor clockwise
-    motor4.run(FORWARD);      // rotate the motor clockwise
+  frontRightMotor.run(BACKWARD);  // rotate the motor anti-clockwise
+  frontLeftMotor.run(BACKWARD);   // rotate the motor anti-clockwise
+  backLeftMotor.run(FORWARD);     // rotate the motor clockwise
+  backRightMotor.run(FORWARD);    // rotate the motor clockwise
   // }
 }
 
@@ -124,15 +134,15 @@ void right() {
   //   Stop();
   //   val = 0;
   // } else {
-    motor1.setSpeed(Speeed);  // Define maximum velocity
-    motor2.setSpeed(Speeed);  // Define maximum velocity
-    motor3.setSpeed(Speeed);  // Define maximum velocity
-    motor4.setSpeed(Speeed);  // Define maximum velocity
+  frontRightMotor.setSpeed(Speeed);  // Define maximum velocity
+  frontLeftMotor.setSpeed(Speeed);   // Define maximum velocity
+  backLeftMotor.setSpeed(Speeed);    // Define maximum velocity
+  backRightMotor.setSpeed(Speeed);   // Define maximum velocity
 
-    motor1.run(FORWARD);      // rotate the motor clockwise
-    motor2.run(FORWARD);      // rotate the motor clockwise
-    motor3.run(BACKWARD);     // rotate the motor anti-clockwise
-    motor4.run(BACKWARD);     // rotate the motor anti-clockwise
+  frontRightMotor.run(FORWARD);  // rotate the motor clockwise
+  frontLeftMotor.run(FORWARD);   // rotate the motor clockwise
+  backLeftMotor.run(BACKWARD);   // rotate the motor anti-clockwise
+  backRightMotor.run(BACKWARD);  // rotate the motor anti-clockwise
   // }
 }
 
@@ -145,14 +155,14 @@ void topleft() {
   //   Stop();
   //   val = 0;
   // } else {
-    motor1.setSpeed(Speeed);        // Define maximum velocity
-    motor1.run(FORWARD);            // rotate the motor clockwise
-    motor2.setSpeed(Speeed/3.1);        // Define maximum velocity
-    motor2.run(FORWARD);            // rotate the motor clockwise
-    motor3.setSpeed(Speeed);  // Define maximum velocity
-    motor3.run(FORWARD);            // rotate the motor clockwise
-    motor4.setSpeed(Speeed);  // Define maximum velocity
-    motor4.run(FORWARD);            // rotate the motor clockwise
+  frontRightMotor.setSpeed(Speeed);       // Define maximum velocity
+  frontRightMotor.run(FORWARD);           // rotate the motor clockwise
+  frontLeftMotor.setSpeed(Speeed / 3.1);  // Define maximum velocity
+  frontLeftMotor.run(FORWARD);            // rotate the motor clockwise
+  backLeftMotor.setSpeed(Speeed);         // Define maximum velocity
+  backLeftMotor.run(FORWARD);             // rotate the motor clockwise
+  backRightMotor.setSpeed(Speeed);        // Define maximum velocity
+  backRightMotor.run(FORWARD);            // rotate the motor clockwise
   // }
 }
 
@@ -165,14 +175,14 @@ void topright() {
   //   Stop();
   //   val = 0;
   // } else {
-    motor1.setSpeed(Speeed / 3.1);  // Define maximum velocity
-    motor1.run(FORWARD);            // rotate the motor clockwise
-    motor2.setSpeed(Speeed);  // Define maximum velocity
-    motor2.run(FORWARD);            // rotate the motor clockwise
-    motor3.setSpeed(Speeed);        // Define maximum velocity
-    motor3.run(FORWARD);            // rotate the motor clockwise
-    motor4.setSpeed(Speeed);        // Define maximum velocity
-    motor4.run(FORWARD);            // rotate the motor clockwise
+  frontRightMotor.setSpeed(Speeed / 3.1);  // Define maximum velocity
+  frontRightMotor.run(FORWARD);            // rotate the motor clockwise
+  frontLeftMotor.setSpeed(Speeed);         // Define maximum velocity
+  frontLeftMotor.run(FORWARD);             // rotate the motor clockwise
+  backLeftMotor.setSpeed(Speeed);          // Define maximum velocity
+  backLeftMotor.run(FORWARD);              // rotate the motor clockwise
+  backRightMotor.setSpeed(Speeed);         // Define maximum velocity
+  backRightMotor.run(FORWARD);             // rotate the motor clockwise
   // }
 }
 
@@ -182,14 +192,14 @@ void bottomleft() {
   //   Stop();
   //   val = 0;
   // } else {
-    motor1.setSpeed(Speeed);        // Define maximum velocity
-    motor1.run(BACKWARD);           // rotate the motor anti-clockwise
-    motor2.setSpeed(Speeed);        // Define maximum velocity
-    motor2.run(BACKWARD);           // rotate the motor anti-clockwise
-    motor3.setSpeed(Speeed / 3.1);  // Define maximum velocity
-    motor3.run(BACKWARD);           // rotate the motor anti-clockwise
-    motor4.setSpeed(Speeed);  // Define maximum velocity
-    motor4.run(BACKWARD);           // rotate the motor anti-clockwise
+  frontRightMotor.setSpeed(Speeed);      // Define maximum velocity
+  frontRightMotor.run(BACKWARD);         // rotate the motor anti-clockwise
+  frontLeftMotor.setSpeed(Speeed);       // Define maximum velocity
+  frontLeftMotor.run(BACKWARD);          // rotate the motor anti-clockwise
+  backLeftMotor.setSpeed(Speeed / 3.1);  // Define maximum velocity
+  backLeftMotor.run(BACKWARD);           // rotate the motor anti-clockwise
+  backRightMotor.setSpeed(Speeed);       // Define maximum velocity
+  backRightMotor.run(BACKWARD);          // rotate the motor anti-clockwise
   // }
 }
 
@@ -199,24 +209,24 @@ void bottomright() {
   //   Stop();
   //   val = 0;
   // } else {
-    motor1.setSpeed(Speeed);  // Define maximum velocity
-    motor1.run(BACKWARD);           // rotate the motor anti-clockwise
-    motor2.setSpeed(Speeed);  // Define maximum velocity
-    motor2.run(BACKWARD);           // rotate the motor anti-clockwise
-    motor3.setSpeed(Speeed);        // Define maximum velocity
-    motor3.run(BACKWARD);           // rotate the motor anti-clockwise
-    motor4.setSpeed(Speeed/3.1);        // Define maximum velocity
-    motor4.run(BACKWARD);           // rotate the motor anti-clockwise
+  frontRightMotor.setSpeed(Speeed);       // Define maximum velocity
+  frontRightMotor.run(BACKWARD);          // rotate the motor anti-clockwise
+  frontLeftMotor.setSpeed(Speeed);        // Define maximum velocity
+  frontLeftMotor.run(BACKWARD);           // rotate the motor anti-clockwise
+  backLeftMotor.setSpeed(Speeed);         // Define maximum velocity
+  backLeftMotor.run(BACKWARD);            // rotate the motor anti-clockwise
+  backRightMotor.setSpeed(Speeed / 3.1);  // Define maximum velocity
+  backRightMotor.run(BACKWARD);           // rotate the motor anti-clockwise
   // }
 }
 
 void Stop() {
-  motor1.setSpeed(0);   // Define minimum velocity
-  motor1.run(RELEASE);  // stop the motor when release the button
-  motor2.setSpeed(0);   // Define minimum velocity
-  motor2.run(RELEASE);  // rotate the motor clockwise
-  motor3.setSpeed(0);   // Define minimum velocity
-  motor3.run(RELEASE);  // stop the motor when release the button
-  motor4.setSpeed(0);   // Define minimum velocity
-  motor4.run(RELEASE);  // stop the motor when release the button
+  frontRightMotor.setSpeed(0);   // Define minimum velocity
+  frontRightMotor.run(RELEASE);  // stop the motor when release the button
+  frontLeftMotor.setSpeed(0);    // Define minimum velocity
+  frontLeftMotor.run(RELEASE);   // rotate the motor clockwise
+  backLeftMotor.setSpeed(0);     // Define minimum velocity
+  backLeftMotor.run(RELEASE);    // stop the motor when release the button
+  backRightMotor.setSpeed(0);    // Define minimum velocity
+  backRightMotor.run(RELEASE);   // stop the motor when release the button
 }

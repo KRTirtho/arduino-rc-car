@@ -1,47 +1,60 @@
 {
   "configurations": [
-    // {
-    //   "name": "Linux",
-    //   "includePath": [
-    //     "${workspaceFolder}/**",
-    //     "~/.local/share/arduino/tools/**",
-    //     "~/.local/share/arduino/hardware/arduino/avr/**",
-    //     "~/.local/share/arduino/hardware/tools/**",
-    //     "~/.local/share/arduino/hardware/arduino/avr/cores/arduino",
-    //     "~/.local/share/arduino/libraries/**",
-    //     "~/Arduino/libraries/**"
-    //   ],
-    //   "forcedInclude": [
-    //     "~/.local/share/arduino/hardware/arduino/avr/cores/arduino/Arduino.h"
-    //   ],
-    //   "defines": [
-    //     "USBCON",
-    //     "ARDUINO=10813"
-    //   ],
-    //   "compilerPath": "~/.local/share/arduino/hardware/tools/avr/bin/avr-gcc",
-    //   "cStandard": "c11",
-    //   "cppStandard": "c++17",
-    //   "intelliSenseMode": "linux-clang-x64"
-    // },
+    {
+      "name": "Linux",
+      "includePath": [
+        "${workspaceFolder}/**",
+        "~/.local/share/arduino/hardware/arduino/avr/cores/arduino",
+        "~/.local/share/arduino/libraries/**",
+        "~/.local/share/arduino/hardware/arduino/avr/libraries/EEPROM/src",
+        "~/.local/share/arduino/hardware/arduino/avr/libraries/HID/src",
+        "~/.local/share/arduino/hardware/arduino/avr/libraries/SoftwareSerial/src",
+        "~/.local/share/arduino/hardware/arduino/avr/libraries/SPI/src",
+        "~/.local/share/arduino/hardware/arduino/avr/libraries/Wire/src",
+        "~/.local/share/arduino/tools/**",
+        "~/.local/share/arduino/hardware/arduino/avr/**",
+        "~/.local/share/arduino/hardware/tools/avr/avr/include",
+        "~/.local/share/arduino/hardware/tools/avr/lib/gcc/avr/7.3.0/include",
+        "~/Arduino/libraries/**"
+      ],
+      "forcedInclude": [
+        "~/.local/share/arduino/hardware/arduino/avr/cores/arduino/Arduino.h"
+      ],
+      "defines": [
+        "USBCON",
+        "ARDUINO=10813"
+      ],
+      "compilerPath": "~/.local/share/arduino/hardware/tools/avr/bin/avr-gcc",
+      "cStandard": "c17",
+      "cppStandard": "c++17",
+      "intelliSenseMode": "linux-clang-x64"
+    },
     {
       "name": "Win32",
       "includePath": [
+        "C:\\Program Files (x86)\\Arduino\\hardware\\arduino\\avr\\cores\\arduino",
+        "C:\\Program Files (x86)\\Arduino\\libraries\\**",
+        "C:\\Program Files (x86)\\Arduino\\hardware\\arduino\\avr\\libraries\\EEPROM\\src",
+        "C:\\Program Files (x86)\\Arduino\\hardware\\arduino\\avr\\libraries\\HID\\src",
+        "C:\\Program Files (x86)\\Arduino\\hardware\\arduino\\avr\\libraries\\SoftwareSerial\\src",
+        "C:\\Program Files (x86)\\Arduino\\hardware\\arduino\\avr\\libraries\\SPI\\src",
+        "C:\\Program Files (x86)\\Arduino\\hardware\\arduino\\avr\\libraries\\Wire\\src",
         "C:\\Program Files (x86)\\Arduino\\tools\\**",
         "C:\\Program Files (x86)\\Arduino\\hardware\\arduino\\avr\\**",
-        "C:\\Program Files (x86)\\Arduino\\hardware\\tools\\**",
-        "C:\\Program Files (x86)\\Arduino\\hardware\\arduino\\avr\\cores\\arduino",
+        "C:\\Program Files (x86)\\Arduino\\hardware\\tools\\avr\\avr\\include",
+        "C:\\Program Files (x86)\\Arduino\\hardware\\tools\\avr\\lib\\gcc\\avr\\7.3.0\\include",
         "C:\\Users\\ashra\\Documents\\Arduino\\libraries"
       ],
       "forcedInclude": [
         "C:\\Program Files (x86)\\Arduino\\hardware\\arduino\\avr\\cores\\arduino\\Arduino.h"
-    ],
-    "intelliSenseMode": "msvc-x64",
-    "compilerPath": "C:\\Program Files (x86)\\Arduino\\hardware\\tools\\avr\\bin\\avr-gcc.exe",
-    "cStandard": "c11",
-    "cppStandard": "c++17",
-    "defines": [
+      ],
+      "intelliSenseMode": "clang-x64",
+      "compilerPath": "C:\\Program Files (x86)\\Arduino\\hardware\\tools\\avr\\bin\\avr-gcc.exe",
+      "cStandard": "c17",
+      "cppStandard": "c++17",
+      "defines": [
         "USBCON"
-    ]
+      ]
     }
   ],
   "version": 4
