@@ -1,6 +1,7 @@
 /*obstacle avoiding,bluetooth control,voice control robot car.
    https://srituhobby.com
 */
+// v1 Motor Shield Lib
 #include <AFMotor.h>
 #include <Servo.h>
 #include <arduino-timer.h>
@@ -11,6 +12,10 @@
 #define Speed 170
 #define spoint 103
 #define IR_PIN A5
+
+#define FRONT_LED_PIN A2
+#define BACK_LED_PIN A3
+#define HORNY_PIN A4
 
 char value;
 int distance;
@@ -41,6 +46,9 @@ void setup() {
   pinMode(Trig, OUTPUT);
   pinMode(Echo, INPUT);
   pinMode(IR_PIN, INPUT);
+  pinMode(FRONT_LED_PIN, OUTPUT)
+  pinMode(BACK_LED_PIN, OUTPUT)
+  pinMode(HORNY_PIN, OUTPUT)
   servo.attach(motor);
   M1.setSpeed(Speed);
   M2.setSpeed(Speed);
@@ -165,6 +173,12 @@ void voicecontrol() {
       right();
     } else if (value == 'T') {
       Stop();
+    } else if(value == 'X'){
+      digitalToggle(FRONT_LED_PIN);
+    } else if(value == 'C'){
+      digitalToggle(BACK_LED_PIN);
+    } else if(value == 'H'){
+      digitalToggle(HORNY_PIN);
     }
   }
 }
@@ -178,6 +192,11 @@ int ultrasonic() {
   long t = pulseIn(Echo, HIGH);
   long cm = t / 29 / 2;  // time convert distance
   return cm;
+}
+
+void digitalToggle(uint8_t pin){
+  digitalWrite(pin, !analogRead(pin));
+  delay(500);
 }
 
 void forward() {
@@ -206,10 +225,14 @@ void left() {
   M4.run(BACKWARD);
 }
 void Stop() {
+  digitalWrite(BACK_LED_PIN, HIGH);
   M1.run(RELEASE);
   M2.run(RELEASE);
   M3.run(RELEASE);
   M4.run(RELEASE);
+  // reset the back LED to default
+  delay(2500);
+  digitalWrite(BACK_LED_PIN, LOW);
 }
 int rightsee() {
   servo.write(20);

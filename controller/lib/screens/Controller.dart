@@ -5,6 +5,7 @@ import 'package:controller/components/ControllerServiceTiles.dart';
 import 'package:controller/services/speech_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:collection/collection.dart';
 
 class ControllerScreen extends StatefulWidget {
   final BluetoothDevice server;
@@ -26,7 +27,6 @@ class _ControllerScreen extends State<ControllerScreen> {
   static final clientID = 0;
   BluetoothConnection? connection;
   bool _isListening = false;
-  String _text = "";
 
   List<_Message> messages = <_Message>[];
   String _messageBuffer = '';
@@ -87,18 +87,24 @@ class _ControllerScreen extends State<ControllerScreen> {
   }
 
   Future toggleRecording() => SpeechApi.toggleRecording(
-        onResult: (text) => setState(() => _text = text),
-        onListening: (isListening) {
-          setState(() => _isListening = isListening);
-
-          if (!isListening) {
-            Future.delayed(Duration(seconds: 1), () {
-              // Utils.scanText(text);
+        onResult: (text) {
+          if (_isListening) {
+            setState(() {
+              _isListening = false;
             });
           }
+          text = text.toLowerCase();
+          for (final command in commands) {
+            if (command.title.toLowerCase() == text) {
+              _sendMessage(command.command);
+              break;
+            }
+          }
+        },
+        onListening: (isListening) {
+          setState(() => _isListening = isListening);
         },
       );
-  double _value = 90.0;
   @override
   Widget build(BuildContext context) {
     final List<Row> list = messages.map((_message) {
@@ -129,10 +135,10 @@ class _ControllerScreen extends State<ControllerScreen> {
     return Scaffold(
       appBar: AppBar(
           title: (isConnecting
-              ? Text('Connecting chat to ${widget.server.name} ...')
+              ? Text('Connecting console to ${widget.server.name} ...')
               : isConnected
-                  ? Text('Live chat with ${widget.server.name}')
-                  : Text('Chat log with ${widget.server.name}'))),
+                  ? Text('Paired console with ${widget.server.name}')
+                  : Text('Connected console logs from ${widget.server.name}'))),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: AvatarGlow(
         animate: _isListening,
@@ -176,8 +182,8 @@ class _ControllerScreen extends State<ControllerScreen> {
                         hintText: isConnecting
                             ? 'Wait until connected...'
                             : isConnected
-                                ? 'Type your message...'
-                                : 'Chat got disconnected',
+                                ? 'Type your command...'
+                                : 'Console got disconnected',
                         hintStyle: const TextStyle(color: Colors.grey),
                       ),
                       enabled: isConnected,
@@ -257,9 +263,11 @@ class _ControllerScreen extends State<ControllerScreen> {
       try {
         connection?.output.add(Uint8List.fromList("$text\r\n".codeUnits));
         await connection?.output.allSent;
-
+        final title = commands
+            .firstWhereOrNull((command) => command.command == text)
+            ?.title;
         setState(() {
-          messages.add(_Message(clientID, text));
+          messages.add(_Message(clientID, "$text ($title)"));
         });
 
         Future.delayed(Duration(milliseconds: 333)).then((_) {
