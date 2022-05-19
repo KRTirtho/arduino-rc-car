@@ -61,7 +61,7 @@
         },
         {
             "name": "Arduino",
-            "compilerPath": "/home/krtirtho/.local/share/arduino/hardware/tools/avr/bin/avr-g++",
+            "compilerPath": "C:\\Program Files (x86)\\Arduino\\hardware\\tools\\avr\\bin\\avr-g++",
             "compilerArgs": [
                 "-std=gnu++11",
                 "-fpermissive",
@@ -73,17 +73,17 @@
             ],
             "intelliSenseMode": "gcc-x64",
             "includePath": [
-                "/home/krtirtho/.local/share/arduino/hardware/arduino/avr/cores/arduino",
-                "/home/krtirtho/.local/share/arduino/hardware/arduino/avr/variants/standard",
-                "/home/krtirtho/Arduino/libraries/Adafruit_Motor_Shield_library",
-                "/home/krtirtho/.local/share/arduino/libraries/Servo/src",
-                "/home/krtirtho/Arduino/libraries/arduino-timer-2.3.1/src",
-                "/home/krtirtho/.local/share/arduino/hardware/tools/avr/lib/gcc/avr/7.3.0/include",
-                "/home/krtirtho/.local/share/arduino/hardware/tools/avr/lib/gcc/avr/7.3.0/include-fixed",
-                "/home/krtirtho/.local/share/arduino/hardware/tools/avr/avr/include"
+                "C:\\Program Files (x86)\\Arduino\\hardware\\arduino\\avr\\cores\\arduino",
+                "C:\\Program Files (x86)\\Arduino\\hardware\\arduino\\avr\\variants\\standard",
+                "C:\\Users\\ashra\\Documents\\Arduino\\libraries\\Adafruit_Motor_Shield_library",
+                "C:\\Program Files (x86)\\Arduino\\libraries\\Servo\\src",
+                "C:\\Users\\ashra\\Documents\\Arduino\\libraries\\arduino-timer\\src",
+                "c:\\program files (x86)\\arduino\\hardware\\tools\\avr\\lib\\gcc\\avr\\7.3.0\\include",
+                "c:\\program files (x86)\\arduino\\hardware\\tools\\avr\\lib\\gcc\\avr\\7.3.0\\include-fixed",
+                "c:\\program files (x86)\\arduino\\hardware\\tools\\avr\\avr\\include"
             ],
             "forcedInclude": [
-                "/home/krtirtho/.local/share/arduino/hardware/arduino/avr/cores/arduino/Arduino.h"
+                "C:\\Program Files (x86)\\Arduino\\hardware\\arduino\\avr\\cores\\arduino\\Arduino.h"
             ],
             "cStandard": "c11",
             "cppStandard": "c++11",

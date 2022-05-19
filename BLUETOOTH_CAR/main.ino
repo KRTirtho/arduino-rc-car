@@ -11,11 +11,11 @@
 #define motor 10
 #define Speed 170
 #define spoint 103
-#define IR_PIN A5
+#define IR_PIN A4
 
 #define FRONT_LED_PIN A2
 #define BACK_LED_PIN A3
-#define HORNY_PIN A4
+#define HORNY_PIN A5
 
 char value;
 int distance;
@@ -46,9 +46,9 @@ void setup() {
   pinMode(Trig, OUTPUT);
   pinMode(Echo, INPUT);
   pinMode(IR_PIN, INPUT);
-  pinMode(FRONT_LED_PIN, OUTPUT)
-  pinMode(BACK_LED_PIN, OUTPUT)
-  pinMode(HORNY_PIN, OUTPUT)
+  pinMode(FRONT_LED_PIN, OUTPUT);
+  pinMode(BACK_LED_PIN, OUTPUT);
+  pinMode(HORNY_PIN, OUTPUT);
   servo.attach(motor);
   M1.setSpeed(Speed);
   M2.setSpeed(Speed);
@@ -212,13 +212,13 @@ void backward() {
   M3.run(FORWARD);
   M4.run(FORWARD);
 }
-void right() {
+void left() {
   M1.run(FORWARD);
   M2.run(FORWARD);
   M3.run(FORWARD);
   M4.run(FORWARD);
 }
-void left() {
+void right() {
   M1.run(BACKWARD);
   M2.run(BACKWARD);
   M3.run(BACKWARD);
@@ -230,18 +230,15 @@ void Stop() {
   M2.run(RELEASE);
   M3.run(RELEASE);
   M4.run(RELEASE);
-  // reset the back LED to default
-  delay(2500);
-  digitalWrite(BACK_LED_PIN, LOW);
 }
-int rightsee() {
+int leftsee() {
   servo.write(20);
   delay(800);
   Left = ultrasonic();
   return Left;
 }
 
-int leftsee() {
+int rightsee() {
   servo.write(180);
   delay(800);
   Right = ultrasonic();
