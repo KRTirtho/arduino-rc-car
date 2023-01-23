@@ -173,11 +173,11 @@ void voicecontrol() {
       right();
     } else if (value == 'T') {
       Stop();
-    } else if(value == 'X'){
+    } else if (value == 'X') {
       digitalToggle(FRONT_LED_PIN);
-    } else if(value == 'C'){
+    } else if (value == 'C') {
       digitalToggle(BACK_LED_PIN);
-    } else if(value == 'H'){
+    } else if (value == 'H') {
       digitalToggle(HORNY_PIN);
     }
   }
@@ -194,12 +194,20 @@ int ultrasonic() {
   return cm;
 }
 
-void digitalToggle(uint8_t pin){
+void digitalToggle(uint8_t pin) {
   digitalWrite(pin, !analogRead(pin));
   delay(500);
 }
 
+void digitalOff(uint8_t pin) {
+  if (analogRead(pin) == HIGH) {
+    digitalWrite(pin, LOW);
+  }
+  delay(100);
+}
+
 void forward() {
+  digitalOff(BACK_LED_PIN);
   M1.run(FORWARD);
   M2.run(FORWARD);
   M3.run(BACKWARD);
@@ -207,18 +215,21 @@ void forward() {
 }
 
 void backward() {
+  digitalOff(BACK_LED_PIN);
   M1.run(BACKWARD);
   M2.run(BACKWARD);
   M3.run(FORWARD);
   M4.run(FORWARD);
 }
 void left() {
+  digitalOff(BACK_LED_PIN);
   M1.run(FORWARD);
   M2.run(FORWARD);
   M3.run(FORWARD);
   M4.run(FORWARD);
 }
 void right() {
+  digitalOff(BACK_LED_PIN);
   M1.run(BACKWARD);
   M2.run(BACKWARD);
   M3.run(BACKWARD);
@@ -226,6 +237,7 @@ void right() {
 }
 void Stop() {
   digitalWrite(BACK_LED_PIN, HIGH);
+  delay(200);
   M1.run(RELEASE);
   M2.run(RELEASE);
   M3.run(RELEASE);
